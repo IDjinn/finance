@@ -5,13 +5,12 @@ import styled from "styled-components/native";
 export const Container = styled.View<CardProps>`
   width: 95%;
   height: ${(props) => (props.height ? props.height : "120px")}
-  background-color: white;
+  background-color: ${props => props.theme.colors.primary};
   margin-bottom: 15px;
-  padding-horizontal: 25px;
-  padding-vertical: 15px;
+  padding: 20px;
 
-  ${(props) => props.theme.border}
-  ${(props) => props.theme.shadow}
+  ${(props) => props.theme.defaltBorder}
+  ${(props) => props.theme.defaultShadow}
 `;
 
 interface CardProps extends ViewProps {
@@ -19,9 +18,5 @@ interface CardProps extends ViewProps {
 }
 
 export default function Card(props: CardProps) {
-  return (
-    <Container {...props}>
-      <Text>Card</Text>
-    </Container>
-  );
+  return <Container {...props}>{props.children}</Container>;
 }

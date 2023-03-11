@@ -1,6 +1,7 @@
 export default {
   colors: {
     background: "#ffffff",
+    primary: '#fff',
 
     text: "#000000",
   },
@@ -11,15 +12,15 @@ export default {
     bold: "Poppins_700Bold",
   },
 
-  border: {
+  defaltBorder: {
     borderRadius: "5px",
   },
 
-  shadow: {
+  defaultShadow: {
     "shadow-color": "#000",
     "shadow-offset": "15px 15px",
-    "shadow-opacity": '0.8',
+    "shadow-opacity": "0.8",
     "shadow-radius": "5px",
-    'elevation': '5',
+    elevation: "5",
   },
 };
