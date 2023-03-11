@@ -1,0 +1,30 @@
+{
+  "accounts": {
+    "name": "Lucas Souza",
+    "agency": "1234-6",
+    "id": "12334556-x",
+    "balance": {
+      "currentBalance": 1000,
+      "futureBalance": 100,
+      "incomings": 123,
+      "outgoings": 432
+    }
+  },
+  "credit-cards": [
+    {
+      "name": "Nubank",
+      "id": "12334556-x",
+      "expires-at": "09/25",
+      "balance": {
+        "debt": 2555,
+        "to-pay-at": "03/03"
+      }
+    }
+  ],
+  "globalBalance": {
+    "currentBalance": 1000,
+    "futureBalance": 100,
+    "incomings": 123,
+    "outgoings": 432
+  }
+}
