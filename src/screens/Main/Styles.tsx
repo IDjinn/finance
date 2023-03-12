@@ -52,6 +52,7 @@ const IconView = styled.View`
   width: 45px;
   height: 45px;
   border-radius: 45px;
+  background-color: ${(props) => props.theme.colors.primary}
 
   margin-horizontal: 5px;
   align-items: center;
@@ -65,19 +66,19 @@ export const Column = styled.View`
   flex-direction: column;
 `;
 
-const IncomingOutgoingIcon = styled(Icon)`
+const ColoredIcon = styled(Icon)`
   color: ${(props) => props.theme.colors.variants.text.light};
 `;
 
 export const IncomingIcon = () => (
   <IconView style={{ backgroundColor: "green" }}>
-    <IncomingOutgoingIcon name={"log-in"} />
+    <ColoredIcon name={"log-in"} />
   </IconView>
 );
 
 export const OutgoingIcon = () => (
   <IconView style={{ backgroundColor: "red" }}>
-    <IncomingOutgoingIcon name={"log-out"} />
+    <ColoredIcon name={"log-out"} />
   </IconView>
 );
 
@@ -90,10 +91,3 @@ export const TotalOutgoingValue = styled(GlobalText)`
 `;
 
 export const Test = styled(GlobalText)``;
-
-export const CreditCardsContainerText = styled(GlobalText)`
-  margin-bottom: 20px;
-`;
-export const CreditCardsLimitResume = styled(GlobalText)`
-  font-size: 12px;
-`;
