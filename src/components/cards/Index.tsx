@@ -3,8 +3,8 @@ import React from "react";
 import styled from "styled-components/native";
 
 export const Container = styled.View<CardProps>`
-  width: 95%;
-  height: ${(props) => (props.height ? props.height : "120px")}
+  width: 90%;
+  min-height: ${(props) => (props.height ? props.height : "120px")}
   margin-bottom: 15px;
   padding: 20px;
 
@@ -16,7 +16,7 @@ export const Container = styled.View<CardProps>`
   border-width: ${(props) => props.theme.borderWidth}
 `;
 
-interface CardProps extends ViewProps {
+export interface CardProps extends ViewProps {
   height?: number;
 }
 

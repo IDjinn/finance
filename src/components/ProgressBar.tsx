@@ -1,9 +1,11 @@
 import React, { useRef, useEffect } from "react";
 import styled from "styled-components/native";
-import { Animated } from "react-native";
+import { Animated, ViewProps } from "react-native";
+import { useTheme } from "styled-components/native";
 
-interface ProgressBarProps {
+interface ProgressBarProps extends ViewProps {
   progress: number;
+  color?: string;
 }
 
 const Container = styled.View`
@@ -16,18 +18,22 @@ const Container = styled.View`
 
 const Bar = styled(Animated.View)`
   height: 100%;
-  background-color: ${props => props.theme.colors.primary};
   border-radius: 5px;
 `;
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({
+  progress,
+  color,
+  ...props
+}) => {
   const animation = useRef(new Animated.Value(0)).current;
+  const theme = useTheme();
 
   useEffect(() => {
     Animated.timing(animation, {
       toValue: progress,
       duration: 1000,
-      useNativeDriver: false, 
+      useNativeDriver: false,
     }).start();
   }, [progress]);
 
@@ -37,8 +43,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
   });
 
   return (
-    <Container>
-      <Bar style={{ width }} />
+    <Container {...props}>
+      <Bar style={{ width, backgroundColor: color ?? theme.colors.primary }} />
     </Container>
   );
 };

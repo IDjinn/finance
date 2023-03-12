@@ -8,7 +8,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppProviders from "./src/providers/AppProviders";
 import React, { useCallback, useEffect, useState } from "react";
 import { loadFonts } from "./src/util/styled/theme";
-import * as SplashScreen from "expo-splash-screen";
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
