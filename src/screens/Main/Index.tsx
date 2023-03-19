@@ -17,11 +17,12 @@ import {
 } from "./Styles";
 import Card from "../../components/cards/Index";
 import { WalletContext } from "../../providers/WalletProvider";
-import { balanceToString } from "../../util/money";
-import CreditCardsListContainer from "../../components/CreditCardsListContainer";
+import { balanceToString } from "../../util/Money";
+import CreditCardsListCard from "../../components/cards/CreditCardsListContainer";
+import WalletMoneyCard from "../../components/cards/WalletMoney";
+import { NavigationProp } from "@react-navigation/native";
 
 export default function Main() {
-
   return (
     <Container>
       <WalletContext.Consumer>
@@ -55,23 +56,13 @@ export default function Main() {
         )}
       </WalletContext.Consumer>
       <Card>
-        <Test>Money</Test>
-        <Test>awsdsqadasd</Test>
+        <WalletMoneyCard />
       </Card>
       <Card>
-        <CreditCardsListContainer />
+        <CreditCardsListCard />
       </Card>
       <Card>
         <Test>Outgoing</Test>
-      </Card>
-      <Card>
-        <Test>Monthly budget</Test>
-      </Card>
-      <Card>
-        <Test>Monthly budget</Test>
-      </Card>
-      <Card>
-        <Test>Monthly budget</Test>
       </Card>
       <Card>
         <Test>Monthly budget</Test>

@@ -77,6 +77,8 @@ export const Centrify = styled.View`
 export interface ColorBrightness {
   brightness?: "light" | "dark" | "unknown";
 }
+
+
 export const GlobalText = styled.Text<ColorBrightness>`
   font-family: ${(props) => props.theme.font.family};
   color: ${(props) => {
@@ -90,6 +92,7 @@ export const GlobalText = styled.Text<ColorBrightness>`
     }
   }};
 `;
+
 
 export const GlobalBoxShadow = styled.View`
   box-shadow: ${({ theme }) => theme.boxShadow};

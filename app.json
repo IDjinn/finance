@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "finance",
+    "name": "com.idjinn.finance",
     "slug": "finance",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,6 +19,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.idjinn.finance",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

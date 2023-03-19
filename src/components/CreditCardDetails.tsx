@@ -2,7 +2,7 @@ import { View, ViewProps } from "react-native";
 import React from "react";
 import { CreditCardData } from "../providers/CreditCardsProvider";
 import ProgressBar from "./ProgressBar";
-import { balanceToString, percentageOfLimitUsage } from "../util/money";
+import { balanceToString, percentageOfLimitUsage } from "../util/Money";
 import Card, { CardProps } from "./cards/Index";
 import styled from "styled-components/native";
 import { FontEnum, getColorBrightness, GlobalText } from "../util/styled/theme";
@@ -86,7 +86,7 @@ export default function CreditCard({ creditCard }: CreditCardProps) {
         )}
       />
       <CreditCardNumber brightness={colorBrightness}>
-        {creditCard.id}
+        {creditCard.number}
       </CreditCardNumber>
       <CreditCardInfoContainer>
         <CreditCardNickname brightness={colorBrightness}>

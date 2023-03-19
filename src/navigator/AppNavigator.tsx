@@ -1,19 +1,24 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import Wallet from "../screens/Wallet/Index";
 import MainNavigator from "./MainNavigator";
 
-export const Pages = Object.freeze({
-  MAIN: "Main",
+export const AppStackPages = Object.freeze({
+  TabNavigator: "TabNavigator",
+  Wallet: 'Wallet'
 });
 
 const Stack = createStackNavigator();
 export default function AppNavigator() {
   return (
     <Stack.Navigator
-      initialRouteName={Pages.MAIN}
+      initialRouteName={AppStackPages.TabNavigator}
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name={Pages.MAIN} component={MainNavigator} />
+      <Stack.Screen
+        name={AppStackPages.TabNavigator}
+        component={MainNavigator}
+      />
     </Stack.Navigator>
   );
 }

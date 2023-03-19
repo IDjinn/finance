@@ -1,24 +1,54 @@
 import React from "react";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import {
+  createMaterialTopTabNavigator,
+} from "@react-navigation/material-top-tabs";
 import Main from "../screens/Main/Index";
-import {useTheme} from "styled-components/native";
+import styled, { useTheme } from "styled-components/native";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Wallet  from "../screens/Wallet/Index";
+import Accounts from "../screens/Accounts/Index";
+import { TabPages, TabRouteParams } from "../util/Navigator";
 
-export const Pages = Object.freeze({
-  Welcome: "Welcome",
-});
+
+const IonicIcon = styled(Ionicons)`
+  font-size: 22px;
+  color: ${({ color, theme }) => color?.toString() ?? theme.colors.secondary};
+`;
+const MaterialCommunityIcon = styled(MaterialCommunityIcons)`
+  font-size: 22px;
+  color: ${({ color, theme }) => color?.toString() ?? theme.colors.secondary};
+`;
+
+const IconContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;
 
 
-const Tab = createMaterialTopTabNavigator();
+const Tab = createMaterialTopTabNavigator<TabRouteParams>();
 export default function MainNavigator() {
   const theme = useTheme();
 
   return (
     <Tab.Navigator
+      initialRouteName={TabPages.Welcome}
       tabBarPosition={"bottom"}
       screenOptions={{
-        tabBarShowLabel: false,
+        tabBarIconStyle: {
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        tabBarIndicatorContainerStyle: {
+          left: 40,
+          alignSelf: "center",
+          justifyContent: "center",
+          alignItems: "center",
+          width: 140,
+        },
         tabBarIndicatorStyle: {
-          backgroundColor: null!,
+          backgroundColor: theme.colors.primary,
         },
         tabBarStyle: {
           position: "absolute",
@@ -40,7 +70,53 @@ export default function MainNavigator() {
         },
       }}
     >
-      <Tab.Screen name={Pages.Welcome} component={Main} />
+      <Tab.Screen
+        name={TabPages.Wallet}
+        component={Wallet}
+        options={{
+          tabBarIcon: (color: string, focused: boolean) => (
+            <IconContainer>
+              <MaterialCommunityIcon
+                size={12}
+                name={"card-account-details-outline"}
+                color={theme.colors.primary}
+              />
+            </IconContainer>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name={TabPages.Welcome}
+        component={Main}
+        options={{
+          tabBarIcon: (color: string, focused: boolean) => {
+            return (
+              <IconContainer>
+                <IonicIcon
+                  size={12}
+                  name={"home-outline"}
+                  color={theme.colors.primary}
+                />
+              </IconContainer>
+            );
+          },
+        }}
+      />
+      <Tab.Screen
+        name={TabPages.Accounts}
+        component={Accounts}
+        options={{
+          tabBarIcon: (color: string, focused: boolean) => (
+            <IconContainer>
+              <MaterialCommunityIcon
+                size={12}
+                name={"card-account-details-outline"}
+                color={theme.colors.primary}
+              />
+            </IconContainer>
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }

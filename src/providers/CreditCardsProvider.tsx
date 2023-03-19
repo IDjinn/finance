@@ -2,8 +2,9 @@ import { createContext, useState } from "react";
 import { ViewProps } from "react-native/types";
 import { useTheme } from "styled-components/native";
 
+export type CreditCardNumber = string | number;
 export type CreditCardData = {
-  id: string;
+  number: CreditCardNumber;
   bank: string;
   flag: string;
   nickname: string;
@@ -32,11 +33,11 @@ export const CreditCardsContext = createContext<CreditCardsData>(
 const CreditCardsProvider = ({ children }: ViewProps) => {
   const theme = useTheme();
   const [creditCards, setCreditCardsData] = useState<CreditCardsData>({
-    limit: 100_000,
-    usedLimit: 10_000,
+    limit: 8000,
+    usedLimit: 2000,
     creditCards: [
       {
-        id: "123 *** *** 99",
+        number: "123 *** *** 99",
         nickname: "Banco do brasil",
         flag: "master-card",
         bank: "banco-do-brasil",
@@ -51,7 +52,7 @@ const CreditCardsProvider = ({ children }: ViewProps) => {
         },
       },
       {
-        id: "5555 **** **** 6666",
+        number: "5555 **** **** 6666",
         nickname: "Nubank",
         flag: "mastercard",
         bank: "Nubank",

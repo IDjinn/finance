@@ -1,16 +1,17 @@
 import React from "react";
 import { Card } from "react-native-paper";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 import CreditCardsProvider, {
   CreditCardData,
   CreditCardsContext,
-} from "../providers/CreditCardsProvider";
-import { balanceToString } from "../util/money";
-import { GlobalText, Centrify } from "../util/styled/theme";
-import CreditCard from "./CreditCard";
-import MultiProgressBar from "./MultiProgressBar";
-import PressableButton from "./PressableButton";
+} from "../../providers/CreditCardsProvider";
+import { balanceToString, percentageOfLimitUsage } from "../../util/Money";
+import { GlobalText, Centrify } from "../../util/styled/theme";
+import CreditCard from "../CreditCardDetails";
+import MultiProgressBar from "../MultiProgressBar";
+import PressableButton from "../PressableButton";
 import Icon from "react-native-vector-icons/Feather";
+import { useCreditCards } from "../../hooks/useCreditCards";
 
 const ColoredIcon = styled(Icon)`
   color: ${(props) => props.theme.colors.variants.text.light};
@@ -49,26 +50,32 @@ export const AddCreditCardButtonLabel = styled(GlobalText)`
   font-size: 10px;
 `;
 
-export default function CreditCardsListContainer() {
-  const [progressData, setProgressData] = React.useState([
-    { progress: 50, color: "rgb(255, 193, 2)" },
-    { progress: 30, color: "rgb(55, 106, 255)" },
-    { progress: 20, color: "rgb(229, 232, 249)" },
-  ]);
+function calculateUsedLimitOfCreditCard(cc: CreditCardData) {
+  return {
+    color: cc.color,
+    progress:
+      percentageOfLimitUsage(cc.balance.limit, cc.balance.usedLimit) * 100,
+  };
+}
 
+export default function CreditCardsListCard() {
+  const theme = useTheme();
   return (
     <CreditCardsContext.Consumer>
-      {({ usedLimit, limit, creditCards }) => (
+      {({ creditCards, usedLimit, limit }) => (
         <>
           <CreditCardsContainerText>Credit Cards</CreditCardsContainerText>
           <CreditCardsLimitResume>
             Você usou {balanceToString(usedLimit)} de seu limite de{" "}
             {balanceToString(limit)}{" "}
           </CreditCardsLimitResume>
-          <MultiProgressBar data={progressData} />
+          <MultiProgressBar
+            color={theme.colors.variants.background.dark}
+            data={creditCards.map(calculateUsedLimitOfCreditCard)}
+          />
           <Centrify>
             {creditCards.map((creditCard) => (
-              <CreditCard key={creditCard.id} creditCard={creditCard} />
+              <CreditCard key={creditCard.number} creditCard={creditCard} />
             ))}
             <AddCreditCardButton>
               <AddCreditCardIcon />

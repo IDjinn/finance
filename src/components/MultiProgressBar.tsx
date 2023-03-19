@@ -1,20 +1,21 @@
 import * as React from "react";
 import { View, Animated, Easing } from "react-native";
 
-interface IPProps {
+interface IProgress {
   progress: number;
   color: string;
 }
 
 interface ProgressBarProps {
-  data: Array<IPProps>;
+  data: Array<IProgress>;
   barHeight?: number;
   shouldAnimate?: boolean;
   animateDuration?: number;
+  color?: string;
 }
 
 interface ProgressBarState {
-  progressData: IPProps[];
+  progressData: IProgress[];
   animatedValue: Animated.Value;
 }
 
@@ -54,16 +55,21 @@ class MultiProgressBar extends React.Component<
       (acc, d) => acc + d.progress,
       0
     );
-    let value = 0;
     let data = this.props.data.map((d) => {
-      value = value + (d.progress / totalProgress) * 100;
       return {
-        progress: value,
+        progress: (d.progress / totalProgress) * 100,
         color: d.color,
       };
     });
-    data = data.reverse();
 
+    if (totalProgress < 100 && this.props.color) {
+      data.push({
+        progress: 100,
+        color: this.props.color,
+      });
+    }
+
+    data = data.reverse();
     this.setState({ progressData: data });
   };
 
