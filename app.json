@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "com.idjinn.finance",
-    "slug": "finance",
+    "name": "com.idjinn.ifinance",
+    "slug": "ifinance",
     "version": "1.0.0",
     "orientation": "portrait",
     "jsEngine": "hermes",
@@ -19,7 +19,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.idjinn.finance",
+      "package": "com.idjinn.ifinance",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

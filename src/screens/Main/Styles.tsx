@@ -1,6 +1,8 @@
+import React from "react";
 import styled from "styled-components/native";
 import { FontEnum, GlobalText, GlobalView } from "../../util/styled/theme";
 import Icon from "react-native-vector-icons/Feather";
+import PressableButton, { PressableButtonProps } from "../../components/PressableButton";
 
 export const Container = styled.ScrollView.attrs({
   contentContainerStyle: {
@@ -48,7 +50,7 @@ export const TotalContainer = styled.View`
   flex-direction: row;
 `;
 
-const IconView = styled.View`
+export const IconView = styled(PressableButton)`
   width: 45px;
   height: 45px;
   border-radius: 45px;
@@ -66,12 +68,12 @@ export const Column = styled.View`
   flex-direction: column;
 `;
 
-const ColoredIcon = styled(Icon)`
+export const ColoredIcon = styled(Icon)`
   color: ${(props) => props.theme.colors.variants.text.light};
 `;
 
-export const IncomingIcon = () => (
-  <IconView style={{ backgroundColor: "green" }}>
+export const IncomingIcon = ({onPress}) => (
+  <IconView style={{ backgroundColor: "green" }} onPress={onPress}>
     <ColoredIcon name={"log-in"} />
   </IconView>
 );

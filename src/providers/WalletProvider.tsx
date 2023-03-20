@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState } from "react";
 import { ViewProps } from "react-native/types";
+import Storage from "../data/Storage";
 
-type WalletData = {
+export type WalletData = {
   currentBalance: number;
   futureBalance: number;
   incomings: number;
@@ -18,17 +19,11 @@ const WalletProvider = ({ children }: ViewProps) => {
     outgoings: 0,
   });
 
-  if (__DEV__) {
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setWalletData((prevState) => {
-          return { ...prevState, currentBalance: prevState.currentBalance + (Math.random() * 100) };
-        });
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }, []);
-  }
+  useEffect(() => {
+    (async () => {
+      setWalletData((await Storage.instance.getWallet()) as WalletData);
+    })();
+  }, []);
 
   return (
     <WalletContext.Provider value={walletData}>

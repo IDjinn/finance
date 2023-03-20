@@ -1,15 +1,13 @@
 import React from "react";
-import {
-  createMaterialTopTabNavigator,
-} from "@react-navigation/material-top-tabs";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import Main from "../screens/Main/Index";
 import styled, { useTheme } from "styled-components/native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import Wallet  from "../screens/Wallet/Index";
+import Wallet from "../screens/Wallet/Index";
 import Accounts from "../screens/Accounts/Index";
 import { TabPages, TabRouteParams } from "../util/Navigator";
-
+import { FontEnum } from "../util/styled/theme";
 
 const IonicIcon = styled(Ionicons)`
   font-size: 22px;
@@ -25,7 +23,6 @@ const IconContainer = styled.View`
   align-items: center;
   justify-content: center;
 `;
-
 
 const Tab = createMaterialTopTabNavigator<TabRouteParams>();
 export default function MainNavigator() {
@@ -52,7 +49,7 @@ export default function MainNavigator() {
         },
         tabBarStyle: {
           position: "absolute",
-          bottom: 25,
+          bottom: 20,
           left: 20,
           right: 20,
           backgroundColor: theme.colors.variants.background.light,
@@ -74,6 +71,10 @@ export default function MainNavigator() {
         name={TabPages.Wallet}
         component={Wallet}
         options={{
+          tabBarLabel: "Carteira",
+          tabBarLabelStyle: {
+            textTransform: undefined,
+          },
           tabBarIcon: (color: string, focused: boolean) => (
             <IconContainer>
               <MaterialCommunityIcon
@@ -89,6 +90,10 @@ export default function MainNavigator() {
         name={TabPages.Welcome}
         component={Main}
         options={{
+          tabBarLabel: "Início",
+          tabBarLabelStyle: {
+            textTransform: undefined,
+          },
           tabBarIcon: (color: string, focused: boolean) => {
             return (
               <IconContainer>
@@ -106,6 +111,10 @@ export default function MainNavigator() {
         name={TabPages.Accounts}
         component={Accounts}
         options={{
+          tabBarLabel: "Contas",
+          tabBarLabelStyle: {
+            textTransform: undefined,
+          },
           tabBarIcon: (color: string, focused: boolean) => (
             <IconContainer>
               <MaterialCommunityIcon

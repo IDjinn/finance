@@ -1,8 +1,9 @@
-import { View, Text } from "react-native";
-import React, { Suspense } from "react";
+import React from "react";
 import {
+  ColoredIcon,
   Column,
   Container,
+  IconView,
   IncomingIcon,
   OutgoingIcon,
   Test,
@@ -20,9 +21,15 @@ import { WalletContext } from "../../providers/WalletProvider";
 import { balanceToString } from "../../util/Money";
 import CreditCardsListCard from "../../components/cards/CreditCardsListContainer";
 import WalletMoneyCard from "../../components/cards/WalletMoney";
-import { NavigationProp } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { AppStackPages } from "../../navigator/AppNavigator";
 
 export default function Main() {
+  const navigation = useNavigation();
+  const addIncoming = () => {
+    navigation.navigate(AppStackPages.Incoming);
+  };
+
   return (
     <Container>
       <WalletContext.Consumer>
@@ -34,7 +41,7 @@ export default function Main() {
             </TotalBalanceValue>
             <TotalIncomingOutgoingContainer>
               <TotalContainer>
-                <IncomingIcon />
+                <IncomingIcon onPress={addIncoming} />
                 <Column>
                   <TotalContainerText>Receitas</TotalContainerText>
                   <TotalIncomingValue>
