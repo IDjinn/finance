@@ -5,6 +5,7 @@ import {
   Container,
   IconView,
   IncomingIcon,
+  Incomings,
   OutgoingIcon,
   Test,
   TotalBalanceContainer,
@@ -23,6 +24,7 @@ import CreditCardsListCard from "../../components/cards/CreditCardsListContainer
 import WalletMoneyCard from "../../components/cards/WalletMoney";
 import { useNavigation } from "@react-navigation/native";
 import { AppStackPages } from "../../navigator/AppNavigator";
+import IncomingsList from "../../components/IncomingsList";
 
 export default function Main() {
   const navigation = useNavigation();
@@ -68,6 +70,7 @@ export default function Main() {
       <Card>
         <CreditCardsListCard />
       </Card>
+      <Incomings />
       <Card>
         <Test>Outgoing</Test>
       </Card>

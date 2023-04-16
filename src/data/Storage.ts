@@ -30,13 +30,13 @@ export default class Storage {
       Keys.ACCOUNTS,
       JSON.stringify([
         {
-          nickname: "nubank",
+          nickname: "Nubank",
           balance: 135.93,
           debt: 342,
           creditCards: ["5555 **** **** 6666"],
         },
         {
-          nickname: "bb",
+          nickname: "Banco do Brasil",
           balance: 345.93,
           debt: 678,
           creditCards: ["5555 **** **** 6666"],

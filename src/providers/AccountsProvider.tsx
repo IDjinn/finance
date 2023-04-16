@@ -31,7 +31,7 @@ const AccountsProvider = ({ children }: ViewProps) => {
   useEffect(() => {
     (async () => {
       const accounts = await Storage.instance.getAccounts();
-      const balance = 43.32;
+      const balance = 567567.32;
       setAccountsData({
         isLoading: false,
         totalBalance: accounts.reduce(

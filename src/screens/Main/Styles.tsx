@@ -2,7 +2,10 @@ import React from "react";
 import styled from "styled-components/native";
 import { FontEnum, GlobalText, GlobalView } from "../../util/styled/theme";
 import Icon from "react-native-vector-icons/Feather";
-import PressableButton, { PressableButtonProps } from "../../components/PressableButton";
+import PressableButton, {
+  PressableButtonProps,
+} from "../../components/PressableButton";
+import IncomingsList from "../../components/IncomingsList";
 
 export const Container = styled.ScrollView.attrs({
   contentContainerStyle: {
@@ -51,8 +54,8 @@ export const TotalContainer = styled.View`
 `;
 
 export const IconView = styled(PressableButton)`
-  width: 45px;
-  height: 45px;
+  width: ${({ size }) => size ?? 45}px;
+  height:  ${({ size }) => size ?? 45}px;;
   border-radius: 45px;
   background-color: ${(props) => props.theme.colors.primary}
 
@@ -72,8 +75,12 @@ export const ColoredIcon = styled(Icon)`
   color: ${(props) => props.theme.colors.variants.text.light};
 `;
 
-export const IncomingIcon = ({onPress}) => (
-  <IconView style={{ backgroundColor: "green" }} onPress={onPress}>
+export const IncomingIcon = ({ onPress, size }: any) => (
+  <IconView
+    style={{ backgroundColor: "green" }}
+    onPress={onPress ?? (() => {})}
+    size={size}
+  >
     <ColoredIcon name={"log-in"} />
   </IconView>
 );
@@ -93,3 +100,7 @@ export const TotalOutgoingValue = styled(GlobalText)`
 `;
 
 export const Test = styled(GlobalText)``;
+
+export const Incomings = styled(IncomingsList)`
+  width: 90%;
+`

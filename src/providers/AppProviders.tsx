@@ -5,14 +5,17 @@ import { ThemeProvider } from "styled-components";
 import theme from "../util/styled/theme";
 import CreditCardsProvider from "./CreditCardsProvider";
 import AccountsProvider from "./AccountsProvider";
+import TransactionsProvider from "./TransactionsProvider";
 
 export default function AppProviders({ children }: ViewProps) {
   return (
     <ThemeProvider theme={theme}>
       <AccountsProvider>
-        <WalletProvider>
-          <CreditCardsProvider>{children}</CreditCardsProvider>
-        </WalletProvider>
+        <TransactionsProvider>
+          <WalletProvider>
+            <CreditCardsProvider>{children}</CreditCardsProvider>
+          </WalletProvider>
+        </TransactionsProvider>
       </AccountsProvider>
     </ThemeProvider>
   );
