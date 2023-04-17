@@ -44,7 +44,7 @@ export default function TransactionsProvider({ children }: any) {
       if (rand) {
         return {
           id: (Math.random() * 100000).toString(),
-          amount: 15.46,
+          amount: Math.random() * 10000,
           from: "Lucas Souza Romero",
           timestamp: DateTime.now().plus({
             days: -Math.floor(29 + Math.random() * 100),
@@ -55,7 +55,7 @@ export default function TransactionsProvider({ children }: any) {
       }
       return {
         id: (Math.random() * 100000).toString(),
-        amount: 76.89,
+        amount: Math.random() * 10000,
         to: "Lucas Souza Romero",
         timestamp: DateTime.now().plus({
           days: -Math.floor(20 + Math.random() * 100),

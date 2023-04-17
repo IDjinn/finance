@@ -22,7 +22,8 @@ import { useTheme } from "styled-components";
 import { Switch } from "@rneui/base";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import PressableButton from "../../components/PressableButton";
-import IncomingsList from "../../components/IncomingsList";
+import RecentTransactions from "../../components/RecentTransactions";
+import { TransactionsContext } from "../../providers/TransactionsProvider";
 
 type NewIncoming = {
   value: number;
@@ -103,7 +104,7 @@ const IconContainer = styled(PressableButton)`
   border-radius: 45px;
 `;
 
-const Incomings = styled(IncomingsList)`
+const Incomings = styled(RecentTransactions)`
   width: 100%;
   height: 40%;
 `;
@@ -121,7 +122,9 @@ export default function Incoming() {
 
   return (
     <Container>
-      <Incomings />
+      <TransactionsContext.Consumer>
+        {({ incomings }) => <Incomings transactions={incomings} />}
+      </TransactionsContext.Consumer>
       <NewIncomingContainer>
         <NewIncomingHeader>Nova Receita</NewIncomingHeader>
         <NewIncomingForm>

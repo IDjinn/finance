@@ -24,11 +24,12 @@ export const CashIcon = styled(Icon).attrs({
 
 interface BalanceValueProps {
   value: number;
+  isNegative?: boolean;
 }
 export const BalanceValue = styled(GlobalText)<BalanceValueProps>`
-  color: ${({ value }) => {
+  color: ${({ value, isNegative }) => {
     if (value.toFixed(2) === "0.00") return "blue";
-    else if (value > 0) return "green";
-    else return "red";
+    else if (value < 0 || isNegative) return "red";
+    else return "green";
   }};
 `;

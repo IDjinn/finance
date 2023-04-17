@@ -1,11 +1,9 @@
 import React from "react";
 import {
-  ColoredIcon,
   Column,
   Container,
-  IconView,
   IncomingIcon,
-  Incomings,
+  TransactionsContainer,
   OutgoingIcon,
   Test,
   TotalBalanceContainer,
@@ -24,7 +22,7 @@ import CreditCardsListCard from "../../components/cards/CreditCardsListContainer
 import WalletMoneyCard from "../../components/cards/WalletMoney";
 import { useNavigation } from "@react-navigation/native";
 import { AppStackPages } from "../../navigator/AppNavigator";
-import IncomingsList from "../../components/IncomingsList";
+import { TransactionsContext } from "../../providers/TransactionsProvider";
 
 export default function Main() {
   const navigation = useNavigation();
@@ -70,7 +68,9 @@ export default function Main() {
       <Card>
         <CreditCardsListCard />
       </Card>
-      <Incomings />
+      <TransactionsContext.Consumer>
+        {({ all }) => <TransactionsContainer transactions={all} />}
+      </TransactionsContext.Consumer>
       <Card>
         <Test>Outgoing</Test>
       </Card>

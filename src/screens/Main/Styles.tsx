@@ -5,7 +5,7 @@ import Icon from "react-native-vector-icons/Feather";
 import PressableButton, {
   PressableButtonProps,
 } from "../../components/PressableButton";
-import IncomingsList from "../../components/IncomingsList";
+import RecentTransactions from "../../components/RecentTransactions";
 
 export const Container = styled.ScrollView.attrs({
   contentContainerStyle: {
@@ -75,18 +75,24 @@ export const ColoredIcon = styled(Icon)`
   color: ${(props) => props.theme.colors.variants.text.light};
 `;
 
-export const IncomingIcon = ({ onPress, size }: any) => (
+export const IncomingIcon = ({ onPress, size, disabled }: any) => (
   <IconView
     style={{ backgroundColor: "green" }}
     onPress={onPress ?? (() => {})}
     size={size}
+    disabled={disabled}
   >
     <ColoredIcon name={"log-in"} />
   </IconView>
 );
 
-export const OutgoingIcon = () => (
-  <IconView style={{ backgroundColor: "red" }}>
+export const OutgoingIcon = ({ onPress, size, disabled }: any) => (
+  <IconView
+    style={{ backgroundColor: "red" }}
+    onPress={onPress ?? (() => {})}
+    size={size}
+    disabled={disabled}
+  >
     <ColoredIcon name={"log-out"} />
   </IconView>
 );
@@ -101,6 +107,6 @@ export const TotalOutgoingValue = styled(GlobalText)`
 
 export const Test = styled(GlobalText)``;
 
-export const Incomings = styled(IncomingsList)`
+export const TransactionsContainer = styled(RecentTransactions)`
   width: 90%;
-`
+`;
