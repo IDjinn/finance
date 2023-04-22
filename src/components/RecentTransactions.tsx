@@ -35,16 +35,16 @@ const TransactionsContainerHeader = styled(GlobalText)`
   margin-bottom: 10px;
 `;
 
-const SelectedMonthText = styled(GlobalText)``;
 
 const Transaction = styled(GlobalView)`
-  width: 100%;
+  width: 95%;
   height: 60px;
   align-items: center;
   padding-horizontal: 10px;
   padding-vertical: 5px;
   flex-direction: row;
   margin-bottom: 10px;
+  align-self: center;
 `;
 
 const IconBox = styled.View`
@@ -55,14 +55,27 @@ const Balance = styled(BalanceValue)`
 `;
 
 const TransactionFrom = styled(GlobalText)`
-  flex: 2;
+  flex: 1.5;
   margin-horizontal: 10px;
 `;
 
 const TransactionTimestamp = styled(GlobalText)`
-  flex: 2;
+  flex: 1.5;
 `;
 
+const MonthSectionContainer = styled.View`
+`;
+
+const MonthText = styled(GlobalText)`
+  font-size: 16px;
+`;
+
+const MonthSectionContainerDiv = styled.View`
+  border-color: ${({ theme }) => theme.colors.variants.background.dark};
+  border-bottom-width: 1px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+`;
 
 export interface RecentTransactionsCard extends ViewProps {
   transactions: (IncomingTransaction | OutgoingTransaction)[];
@@ -123,7 +136,10 @@ export default function RecentTransactions({
         sections={settings.data}
         keyExtractor={(item, index) => item.id + index}
         renderSectionHeader={({ section: { title: month } }) => (
-          <SelectedMonthText>{month}</SelectedMonthText>
+          <MonthSectionContainer>
+            <MonthText>{month}</MonthText>
+            <MonthSectionContainerDiv/>
+          </MonthSectionContainer>
         )}
         renderItem={({ item: transaction }) => {
           const isIncoming = safeCastToIncoming(transaction);

@@ -110,3 +110,7 @@ export const Test = styled(GlobalText)``;
 export const TransactionsContainer = styled(RecentTransactions)`
   width: 90%;
 `;
+
+export const FooterEmptySpace = styled.View`
+  height: 90px;
+`

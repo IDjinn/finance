@@ -48,9 +48,30 @@ const AccountTotalText = styled(GlobalText)`
   font-size: 12px;
 `;
 
+const BankStatementButton = styled(PressableButton)`
+  background-color: ${({ theme }) => theme.colors.primary}
+  width: 145px;
+  height: 45px;
+  padding-horizontal: 12px;
+  padding-vertical: 5px;
+  justify-items: center;
+  align-items: center;
+  
+  border-radius: 100px;
+  margin-top: 20px;
+  padding-vertical: 10px;
+`;
+
+const BankStatementButtonText = styled(GlobalText)`
+  font-size: 14px;
+  font-family: ${FontEnum.GraphikRegular};
+  text-align: center;
+  text-align-vertical: center;
+`;
+
 const AddAccountButton = styled(PressableButton)`
   background-color: ${({ theme }) => theme.colors.primary}
-  width: 170px;
+  width: 145px;
   height: 45px;
   padding-horizontal: 12px;
   padding-vertical: 5px;
@@ -69,8 +90,20 @@ const AddAccountButtonText = styled(GlobalText)`
   text-align-vertical: center;
 `;
 
+const WalletButtonsContainer = styled.View`
+  flex-direction: row;
+  align-items: center
+  justify-content: space-between;
+`;
+
+const TotalBalanceValue = styled(BalanceValue)`
+  font-size: 16px;
+  font-weight: bold;
+`;
+
 export default function WalletMoneyCard() {
   const [isAddingAccount, setIsAddingAccount] = React.useState(false);
+  const [isLoadingStatement, setIsLoadingStatement] = React.useState(false);
   const navigation = useNavigation<TabNavigation>();
   const theme = useTheme();
 
@@ -78,6 +111,11 @@ export default function WalletMoneyCard() {
     setIsAddingAccount(true);
     navigation.navigate(TabPages.Accounts, { action: "add-account" });
     setIsAddingAccount(false);
+  };
+
+  const makeStatemant = () => {
+    setIsLoadingStatement(true);
+    setIsLoadingStatement(false);
   };
 
   return (
@@ -89,9 +127,9 @@ export default function WalletMoneyCard() {
               <CashIcon />
               <Text>Carteira</Text>
             </Row>
-            <BalanceValue value={balance}>
+            <TotalBalanceValue value={balance}>
               {balanceToString(balance)}
-            </BalanceValue>
+            </TotalBalanceValue>
           </WalletBalanceContainer>
           <Div />
           <SpacedRow>
@@ -106,17 +144,26 @@ export default function WalletMoneyCard() {
               </BalanceValue>
             </SpacedRow>
           ))}
-          <Centrify>
+          <WalletButtonsContainer>
+            <BankStatementButton
+              isLoading={isLoadingStatement}
+              onPress={makeStatemant}
+              activityIndicatorColor={theme.colors.variants.primary.light}
+            >
+              <BankStatementButtonText brightness="dark">
+                Extrato
+              </BankStatementButtonText>
+            </BankStatementButton>
             <AddAccountButton
               isLoading={isAddingAccount}
               onPress={addAccountHandler}
               activityIndicatorColor={theme.colors.variants.primary.light}
             >
               <AddAccountButtonText brightness="dark">
-                ADICIONAR CONTA
+                Adicionar conta
               </AddAccountButtonText>
             </AddAccountButton>
-          </Centrify>
+          </WalletButtonsContainer>
         </>
       )}
     </AccountsContext.Consumer>

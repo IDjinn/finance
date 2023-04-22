@@ -14,6 +14,7 @@ import {
   TotalIncomingOutgoingContainer,
   TotalIncomingValue,
   TotalOutgoingValue,
+  FooterEmptySpace,
 } from "./Styles";
 import Card from "../../components/cards/Index";
 import { WalletContext } from "../../providers/WalletProvider";
@@ -28,6 +29,9 @@ export default function Main() {
   const navigation = useNavigation();
   const addIncoming = () => {
     navigation.navigate(AppStackPages.Incoming);
+  };
+  const addOutgoing = () => {
+    navigation.navigate(AppStackPages.Outgoing);
   };
 
   return (
@@ -50,7 +54,7 @@ export default function Main() {
                 </Column>
               </TotalContainer>
               <TotalContainer>
-                <OutgoingIcon />
+                <OutgoingIcon onPress={addOutgoing} />
                 <Column>
                   <TotalContainerText>Despesas</TotalContainerText>
                   <TotalOutgoingValue>
@@ -72,11 +76,15 @@ export default function Main() {
         {({ all }) => <TransactionsContainer transactions={all} />}
       </TransactionsContext.Consumer>
       <Card>
-        <Test>Outgoing</Test>
-      </Card>
-      <Card>
+        <Test>Monthly budget</Test>
+        <Test>Monthly budget</Test>
+        <Test>Monthly budget</Test>
+        <Test>Monthly budget</Test>
+        <Test>Monthly budget</Test>
+        <Test>Monthly budget</Test>
         <Test>Monthly budget</Test>
       </Card>
+      <FooterEmptySpace />
     </Container>
   );
 }

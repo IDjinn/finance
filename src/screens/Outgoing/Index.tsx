@@ -4,10 +4,10 @@ import {
   DateContainer,
   DateText,
   Divisor,
-  NewIncomingContainer,
-  NewIncomingForm,
-  NewIncomingHeader,
-  NewIncomingValueContainer,
+  NewOutoingContainer,
+  NewOutoingForm,
+  NewOutoingHeader,
+  NewOutoingValueContainer,
 } from "./Styles";
 import { Text, ToastAndroid } from "react-native";
 import { useReducer } from "react";
@@ -22,7 +22,7 @@ import RecentTransactions from "../../components/RecentTransactions";
 import { TransactionsContext } from "../../providers/TransactionsProvider";
 import { CashIcon } from "../../util/Money";
 
-type NewIncoming = {
+type NewOutoing = {
   value: number;
   alreadyReceived: boolean;
   showDatePicker: boolean;
@@ -32,8 +32,8 @@ type NewIncoming = {
   attachments: [];
 };
 
-const initialState: NewIncoming = {
-  value: 0,
+const initialState: NewOutoing = {
+  value: -0.01,
   showDatePicker: false,
   alreadyReceived: true,
   timestamp: DateTime.now(),
@@ -73,7 +73,7 @@ type Action =
   | ActionSetDescription
   | ActionSetVisibilityDatePicker;
 
-function newTransationReducer(state: NewIncoming, action: Action): NewIncoming {
+function newTransationReducer(state: NewOutoing, action: Action): NewOutoing {
   switch (action.type) {
     case "SET_VALUE":
       return { ...state, value: action.payload };
@@ -106,39 +106,38 @@ const Incomings = styled(RecentTransactions)`
   height: 40%;
 `;
 
-export default function Incoming() {
-  const theme = useTheme();
-  const [newIncoming, dispatchNewIncoming] = useReducer(
+export default function Outgoing() {
+  const [newOutgoing, dispatchNewOutgoing] = useReducer(
     newTransationReducer,
     initialState
   );
 
   const submit = () => {
-    ToastAndroid.show("ok: " + JSON.stringify(newIncoming), 100);
+    ToastAndroid.show("ok: " + JSON.stringify(newOutgoing), 100);
   };
 
   return (
     <Container>
       <TransactionsContext.Consumer>
-        {({ incomings }) => <Incomings transactions={incomings} />}
+        {({ outgoings }) => <Incomings transactions={outgoings} />}
       </TransactionsContext.Consumer>
-      <NewIncomingContainer>
-        <NewIncomingHeader>Nova Receita</NewIncomingHeader>
-        <NewIncomingForm>
-          <NewIncomingValueContainer>
+      <NewOutoingContainer>
+        <NewOutoingHeader>Nova Despesa</NewOutoingHeader>
+        <NewOutoingForm>
+          <NewOutoingValueContainer>
             <CashIcon style={{ flex: 1 }} />
             <MoneyInput
               style={{ flex: 9 }}
-              value={newIncoming.value}
+              value={newOutgoing.value}
               onChangeValue={(value) =>
                 value &&
-                dispatchNewIncoming({
+                dispatchNewOutgoing({
                   type: "SET_VALUE",
                   payload: value,
                 })
               }
             />
-          </NewIncomingValueContainer>
+          </NewOutoingValueContainer>
           {/* <Divisor />
           <SwitchContainer>
             <Switch
@@ -157,32 +156,32 @@ export default function Incoming() {
           <Divisor />
           <DateContainer
             onPress={() =>
-              dispatchNewIncoming({
+              dispatchNewOutgoing({
                 type: "SET_SHOW_DATEPICKER",
-                payload: !newIncoming.showDatePicker,
+                payload: !newOutgoing.showDatePicker,
               })
             }
           >
             <Icon name={"calendar"} size={24} style={{ flex: 1 }} />
-            {newIncoming.showDatePicker && (
+            {newOutgoing.showDatePicker && (
               <DateTimePicker
                 mode={"date"}
-                value={newIncoming.timestamp.toJSDate()}
+                value={newOutgoing.timestamp.toJSDate()}
                 onChange={(event, date) => {
-                  dispatchNewIncoming({
+                  dispatchNewOutgoing({
                     type: "SET_SHOW_DATEPICKER",
                     payload: false,
                   });
                   if (event.type == "set") {
-                    dispatchNewIncoming({
+                    dispatchNewOutgoing({
                       type: "SET_TIMESTAMP",
                       payload: DateTime.fromJSDate(date ?? new Date()),
                     });
-                  }s
+                  }
                 }}
               />
             )}
-            <DateText>{newIncoming.timestamp?.toFormat("dd/MM/yyyy")}</DateText>
+            <DateText>{newOutgoing.timestamp?.toFormat("dd/MM/yyyy")}</DateText>
           </DateContainer>
           <Divisor />
           <CategoriesContainer>
@@ -195,8 +194,8 @@ export default function Incoming() {
           <IconContainer onPress={submit}>
             <Icon name={"check"} color={"#fff"} size={24} />
           </IconContainer>
-        </NewIncomingForm>
-      </NewIncomingContainer>
+        </NewOutoingForm>
+      </NewOutoingContainer>
     </Container>
   );
 }

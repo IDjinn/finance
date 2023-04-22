@@ -5,10 +5,12 @@ import PressableButton from "../components/PressableButton";
 import Incoming from "../screens/Incoming/Index";
 import MainNavigator from "./MainNavigator";
 import Icon from "react-native-vector-icons/Ionicons";
+import Outgoing from "../screens/Outgoing/Index";
 
 export const AppStackPages = Object.freeze({
   TabNavigator: "TabNavigator",
   Incoming: "Receitas",
+  Outgoing: "Despesas",
 });
 
 const BackButtonContainer = styled(PressableButton)`
@@ -50,6 +52,7 @@ export default function AppNavigator() {
         }}
       />
       <Stack.Screen name={AppStackPages.Incoming} component={Incoming} />
+      <Stack.Screen name={AppStackPages.Outgoing} component={Outgoing} />
     </Stack.Navigator>
   );
 }

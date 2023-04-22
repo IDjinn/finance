@@ -15,12 +15,12 @@ export const Container = styled.View`
   padding-horizontal: 5%;
 `;
 
-export const NewIncomingHeader = styled(GlobalText)`
+export const NewOutoingHeader = styled(GlobalText)`
   font-size: 18px;
   font-family: ${FontEnum.GraphikRegular};
 `;
 
-export const NewIncomingContainer = styled(GlobalView)`
+export const NewOutoingContainer = styled(GlobalView)`
   width: 100%;
   flex: 1;
   flex-direction: column;
@@ -29,8 +29,7 @@ export const NewIncomingContainer = styled(GlobalView)`
   margin-bottom: 15px;
 `;
 
-
-export const NewIncomingForm = styled.View`
+export const NewOutoingForm = styled.View`
   flex: 1;
   margin-horizontal: 10px;
 `;
@@ -38,7 +37,6 @@ export const NewIncomingForm = styled.View`
 export const MonthSelector = styled.View`
   width: 95%;
 `;
-
 
 export const SwitchContainer = styled.View`
   flex-direction: row;
@@ -63,14 +61,14 @@ export const DateText = styled(GlobalText)`
   flex: 9;
 `;
 
-export const NewIncomingValueContainer = styled.View`
+export const NewOutoingValueContainer = styled.View`
   flex-direction: row;
   align-items: center;
 
   height: 15%;
 `;
 
-export const NewIncomingValueText = styled(GlobalText)`
+export const NewOutoingValueText = styled(GlobalText)`
   margin-right: 5px;
 `;
 
@@ -84,5 +82,4 @@ export const CategoriesContainer = styled.View`
 export const Divisor = styled.View`
   border-bottom-width: 2px;
   border-color: gray;
-
-`
+`;
