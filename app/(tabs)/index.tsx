@@ -1,10 +1,11 @@
 import { StyleSheet, Button, useAnimatedValue, View, PixelRatio, TouchableOpacity } from 'react-native';
 
 import { Text } from '@/components/Themed';
+import { Text as SkiaText } from '@shopify/react-native-skia';
 import styled from 'styled-components/native';
 import Card from '@/components/cards/Card';
 import React, { useEffect, useMemo, useState } from 'react';
-import Animated, { Easing, FadeInDown, FadeInLeft, FadeInRight, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
+import Animated, { Easing, FadeInDown, FadeInLeft, FadeInRight, FadeInUp, FadeOut, FadeOutRight, Layout, LinearTransition, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useFont, listFontFamilies, matchFont } from '@shopify/react-native-skia';
 import DonutChart, { Data } from '@/components/charts/donut/DonutChart';
 import { generateRandomNumbers } from '@/utils/random';
@@ -24,8 +25,8 @@ export default function TabOneScreen() {
   const colors = ['#fe769c', '#46a0f8', '#c3f439', '#88dabc', '#e43433'];
   const [render, setRender] = useState(false)
 
-  const renderCard = () => {
-    setRender(!render)
+  const toggleRender = () => {
+    setRender(!render);
   }
 
   const generateData = () => {
@@ -66,44 +67,75 @@ export default function TabOneScreen() {
     return <View />;
   }
 
+  const targetText = useDerivedValue(
+    () => `$${Math.round(totalValue.value)}`,
+    [],
+  );
+
+  const fontSize = font.measureText('$00');
+  const smallFontSize = smallerFont.measureText('Total Spent');
+
+  const textX = useDerivedValue(() => {
+    const _fontSize = font.measureText(targetText.value);
+    return RADIUS - _fontSize.width / 2;
+  }, []);
+
+
   return (
     <Container>
-      <TouchableOpacity onPress={renderCard} style={styles.button}>
+      <TouchableOpacity onPress={toggleRender} style={styles.button}>
         <Text style={styles.buttonText}>Render</Text>
       </TouchableOpacity>
-      {render && (
-        <>
-          <Text style={styles.title}>Finance</Text>
-          <Card.Container entering={FadeInDown.duration(Constants.MEDIUM_ANIMATION_MILLIS)}>
-            <Card.Header>
-              <Card.Title entering={FadeInLeft.duration(Constants.SLOW_ANIMATION_MILLIS)}  >Velit </Card.Title>
-            </Card.Header>
-            <Card.Body>
-              <Center>
-                <View style={styles.ringChartContainer}>
+      <Text style={styles.title}>Finance</Text>
+      <Card.Container
+        layout={LinearTransition.duration(Constants.SLOW_ANIMATION_MILLIS).delay(Constants.SLOW_ANIMATION_MILLIS)}
+        entering={FadeInLeft}
+        exiting={FadeOutRight}
+      >
+        <Card.Header>
+          <Card.Title
 
-                  <DonutChart
-                    radius={RADIUS}
-                    gap={GAP}
-                    strokeWidth={STROKE_WIDTH}
-                    outerStrokeWidth={OUTER_STROKE_WIDTH}
-                    font={font}
-                    smallFont={smallerFont}
-                    totalValue={totalValue}
-                    n={n}
-                    decimals={decimals}
-                    colors={colors}
-                  />
-                </View>
-                <TouchableOpacity onPress={generateData} style={styles.button}>
-                  <Text style={styles.buttonText}>Animate !</Text>
-                </TouchableOpacity>
-              </Center>
-            </Card.Body>
-          </Card.Container>
-        </>
-      )}
-
+            layout={LinearTransition.duration(Constants.SLOW_ANIMATION_MILLIS).delay(Constants.SLOW_ANIMATION_MILLIS)}
+            entering={FadeInLeft}
+            exiting={FadeOutRight} >Velit </Card.Title>
+        </Card.Header>
+        <Card.Body>
+          <Center>
+            <View style={styles.ringChartContainer}>
+              <DonutChart
+                radius={RADIUS}
+                gap={GAP}
+                strokeWidth={STROKE_WIDTH}
+                outerStrokeWidth={OUTER_STROKE_WIDTH}
+                font={font}
+                smallFont={smallerFont}
+                totalValue={totalValue}
+                n={n}
+                decimals={decimals}
+                colors={colors}
+              >
+                <SkiaText
+                  x={RADIUS - smallFontSize.width / 2}
+                  y={RADIUS + smallFontSize.height / 2 - fontSize.height / 1.2}
+                  font={smallerFont}
+                  text={'Total Spent'}
+                  color="black"
+                />
+                <SkiaText
+                  x={textX}
+                  y={RADIUS + fontSize.height / 2}
+                  text={targetText}
+                  font={font}
+                  color="black"
+                />
+              </DonutChart>
+            </View>
+            <TouchableOpacity onPress={generateData} style={styles.button}>
+              <Text style={styles.buttonText}>Animate !</Text>
+            </TouchableOpacity>
+          </Center>
+        </Card.Body>
+      </Card.Container>
     </Container>
   );
 }

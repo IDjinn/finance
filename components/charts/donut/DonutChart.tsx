@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, ReactNode } from "react";
 
 import {
     AnimatedProp,
@@ -29,6 +29,7 @@ type Props = {
     totalValue: SharedValue<number>;
     font: SkFont;
     smallFont: SkFont;
+    children?: ReactNode;
 };
 export interface Data {
   value: number;
@@ -37,7 +38,7 @@ export interface Data {
 }
 
 
-const DonutChart = ({
+const DonutChart: FC<Props> = ({
     n,
     gap,
     decimals,
@@ -48,7 +49,9 @@ const DonutChart = ({
     radius,
     font,
     smallFont,
-}: Props) => {
+    
+    children,
+}) => {
     const array = Array.from({ length: n });
     const innerRadius = radius - outerStrokeWidth / 2;
 
@@ -95,20 +98,7 @@ const DonutChart = ({
                         />
                     );
                 })}
-                <Text
-                    x={radius - smallFontSize.width / 2}
-                    y={radius + smallFontSize.height / 2 - fontSize.height / 1.2}
-                    text={'Total Spent'}
-                    font={smallFont}
-                    color="black"
-                />
-                <Text
-                    x={textX}
-                    y={radius + fontSize.height / 2}
-                    text={targetText}
-                    font={font}
-                    color="black"
-                />
+                  {children}
             </Canvas>
         </View>
     );
