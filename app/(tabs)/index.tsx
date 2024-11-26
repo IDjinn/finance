@@ -3,25 +3,51 @@ import { StyleSheet, Button, useAnimatedValue, View, PixelRatio, TouchableOpacit
 import { Text } from '@/components/Themed';
 import styled from 'styled-components/native';
 import Card from '@/components/cards/Card';
-import React, { useEffect } from 'react';
-import { Easing, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
+import React, { useEffect, useMemo, useState } from 'react';
+import Animated, { Easing, FadeInDown, FadeInLeft, FadeInRight, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useFont, listFontFamilies, matchFont } from '@shopify/react-native-skia';
-import { DonutChart } from '@/components/charts/donut/DonutChart';
+import DonutChart, { Data } from '@/components/charts/donut/DonutChart';
+import { generateRandomNumbers } from '@/utils/random';
+import { calculatePercentage } from '@/utils/percentage';
+import { Constants } from '@/utils/constants';
 
-const radius = PixelRatio.roundToNearestPixel(130);
-const STROKE_WIDTH = 12;
+const RADIUS = 160;
+const STROKE_WIDTH = 30;
+const OUTER_STROKE_WIDTH = 46;
+const GAP = 0.04;
 
 export default function TabOneScreen() {
-  const targetPercentage = (50 / 100);
-  const animationState = useSharedValue(0);
-  const animatedPercentage = useDerivedValue(() => animationState.value / 100);
+  const n = 5;
+  const [data, setData] = useState<Data[]>([]);
+  const totalValue = useSharedValue(0);
+  const decimals = useSharedValue<number[]>([]);
+  const colors = ['#fe769c', '#46a0f8', '#c3f439', '#88dabc', '#e43433'];
+  const [render, setRender] = useState(false)
 
-  const animateChart = () => {
-    animationState.value = 0;
-    animationState.value = withTiming(targetPercentage * 100, {
-      duration: 1250,
-      easing: Easing.inOut(Easing.cubic),
-    });
+  const renderCard = () => {
+    setRender(!render)
+  }
+
+  const generateData = () => {
+    const generateNumbers = generateRandomNumbers(n);
+    const total = generateNumbers.reduce(
+      (acc, currentValue) => acc + currentValue,
+      0,
+    );
+    const generatePercentages = calculatePercentage(generateNumbers, total);
+    const generateDecimals = generatePercentages.map(
+      number => Number(number.toFixed(0)) / 100,
+    );
+    totalValue.value = withTiming(total, { duration: 1000 });
+    decimals.value = [...generateDecimals];
+
+    const arrayOfObjects = generateNumbers.map((value, index) => ({
+      value,
+      percentage: generatePercentages[index],
+      color: colors[index],
+    }));
+
+    setData(arrayOfObjects);
   };
 
   const fontStyle = {
@@ -42,42 +68,52 @@ export default function TabOneScreen() {
 
   return (
     <Container>
-      <Text style={styles.title}>Finance</Text>
-      <Card.Container>
-        <Card.Header>
-          <Card.Title>Velit </Card.Title>
-        </Card.Header>
-        <Card.Body>
-          <Center>
-            <View style={styles.ringChartContainer}>
-              <DonutChart
-                backgroundColor="white"
-                radius={radius}
-                strokeWidth={STROKE_WIDTH}
-                percentageComplete={animatedPercentage}
-                targetPercentage={targetPercentage}
-                font={font}
-                smallerFont={smallerFont}
-                start={Math.PI}
-              />
-            </View>
-            <TouchableOpacity onPress={animateChart} style={styles.button}>
-              <Text style={styles.buttonText}>Animate !</Text>
-            </TouchableOpacity>
-          </Center>
-        </Card.Body>
-      </Card.Container>
+      <TouchableOpacity onPress={renderCard} style={styles.button}>
+        <Text style={styles.buttonText}>Render</Text>
+      </TouchableOpacity>
+      {render && (
+        <>
+          <Text style={styles.title}>Finance</Text>
+          <Card.Container entering={FadeInDown.duration(Constants.MEDIUM_ANIMATION_MILLIS)}>
+            <Card.Header>
+              <Card.Title entering={FadeInLeft.duration(Constants.SLOW_ANIMATION_MILLIS)}  >Velit </Card.Title>
+            </Card.Header>
+            <Card.Body>
+              <Center>
+                <View style={styles.ringChartContainer}>
+
+                  <DonutChart
+                    radius={RADIUS}
+                    gap={GAP}
+                    strokeWidth={STROKE_WIDTH}
+                    outerStrokeWidth={OUTER_STROKE_WIDTH}
+                    font={font}
+                    smallFont={smallerFont}
+                    totalValue={totalValue}
+                    n={n}
+                    decimals={decimals}
+                    colors={colors}
+                  />
+                </View>
+                <TouchableOpacity onPress={generateData} style={styles.button}>
+                  <Text style={styles.buttonText}>Animate !</Text>
+                </TouchableOpacity>
+              </Center>
+            </Card.Body>
+          </Card.Container>
+        </>
+      )}
 
     </Container>
   );
 }
 
-const Container = styled.View`
+const Container = styled(Animated.View)`
   display: flex;
   padding-top: 30px;
   padding: 20px;
   justify-content: center;
-`;
+`
 
 const Center = styled.View`
   display: flex;
@@ -94,8 +130,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   ringChartContainer: {
-    width: radius * 2,
-    height: radius * 2,
+    width: RADIUS * 2,
+    height: RADIUS * 2,
   },
   title: {
     fontSize: 24,
