@@ -51,34 +51,22 @@ export default function TabOneScreen() {
     setData(arrayOfObjects);
   };
 
-  const fontStyle = {
-    fontFamily: 'arial',
-    fontSize: 60,
-  };
-  const smallFontStyle = {
-    fontFamily: 'arial',
-    fontSize: 25,
-  };
-  const font = matchFont(fontStyle);
-  const smallerFont = matchFont(smallFontStyle);
+  const fontStyle = useMemo(() => ({ fontFamily: 'arial', fontSize: 60 }), []);
+  const smallFontStyle = useMemo(() => ({ fontFamily: 'arial', fontSize: 25 }), []);
+
+  const font = useMemo(() => matchFont(fontStyle), [fontStyle]);
+  const smallerFont = useMemo(() => matchFont(smallFontStyle), [smallFontStyle]);
 
   if (!font || !smallerFont) {
     console.error('Font not loaded');
     return <View />;
   }
 
-  const targetText = useDerivedValue(
-    () => `$${Math.round(totalValue.value)}`,
-    [],
-  );
-
-  const fontSize = font.measureText('$00');
-  const smallFontSize = smallerFont.measureText('Total Spent');
-
+  const targetText = useDerivedValue(() => `$${Math.round(totalValue.value)}`, []);
   const textX = useDerivedValue(() => {
-    const _fontSize = font.measureText(targetText.value);
-    return RADIUS - _fontSize.width / 2;
-  }, []);
+    const textSize = font.measureText(targetText.value);
+    return RADIUS - textSize.width / 2;
+  }, [font, targetText]);
 
 
   return (
@@ -115,15 +103,15 @@ export default function TabOneScreen() {
                 colors={colors}
               >
                 <SkiaText
-                  x={RADIUS - smallFontSize.width / 2}
-                  y={RADIUS + smallFontSize.height / 2 - fontSize.height / 1.2}
+                  x={RADIUS - smallerFont.measureText('Total Spent').width / 2}
+                  y={RADIUS + smallerFont.measureText('$$').height * 2.5 }
                   font={smallerFont}
                   text={'Total Spent'}
                   color="black"
                 />
                 <SkiaText
                   x={textX}
-                  y={RADIUS + fontSize.height / 2}
+                  y={RADIUS + font.measureText('$00').height / 2}
                   text={targetText}
                   font={font}
                   color="black"
