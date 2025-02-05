@@ -11,6 +11,7 @@ import {
 import { StyleSheet, View } from "react-native";
 import DonutPath from "./DonutPath";
 import { SharedValue, useDerivedValue } from "react-native-reanimated";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export interface DonutData {
     percentage: number;
@@ -32,9 +33,9 @@ type Props = {
     children?: ReactNode;
 };
 export interface Data {
-  value: number;
-  percentage: number;
-  color: string;
+    value: number;
+    percentage: number;
+    color: string;
 }
 
 
@@ -49,7 +50,7 @@ const DonutChart: FC<Props> = ({
     radius,
     font,
     smallFont,
-    
+
     children,
 }) => {
     const array = Array.from({ length: n });
@@ -98,7 +99,7 @@ const DonutChart: FC<Props> = ({
                         />
                     );
                 })}
-                  {children}
+                {children}
             </Canvas>
         </View>
     );

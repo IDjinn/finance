@@ -1,5 +1,5 @@
-import React from 'react';
-import { Path, Skia } from '@shopify/react-native-skia';
+import React, { useMemo, useState } from 'react';
+import { Path, Skia, usePathValue } from '@shopify/react-native-skia';
 import {
     SharedValue,
     useDerivedValue,
@@ -29,6 +29,7 @@ const DonutPath = ({
 
     const path = Skia.Path.Make();
     path.addCircle(radius, radius, innerRadius);
+
 
     const start = useDerivedValue(() => {
         if (index === 0) {

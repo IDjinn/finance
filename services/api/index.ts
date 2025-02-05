@@ -1,13 +1,11 @@
-import { Transaction } from "@/utils/data/transaction";
+import {  Transaction } from "@/utils/data/transaction";
 import { Account } from "@/utils/data/account";
 import { EntitySorter } from "@/utils/data/entity";
+import { MonthExpenseSumary, MonthlySumarySorter } from "@/utils/data/expenses/sumary";
+import { money } from "@/utils/data/balance";
 
 
 export class API {
-    private static readonly _instance = new API();
-
-    public getInstance = () => API._instance;
-
     public getAllTransactions(): Readonly<Transaction[]> {
         return [
             {
@@ -16,7 +14,7 @@ export class API {
                 timestamp: new Date("2022-01-01T12:00:00Z"),
                 type: "income",
                 balance: {
-                    balance: 1000,
+                    value: 1000,
                     currency: "BRL"
                 },
                 category: {
@@ -32,7 +30,7 @@ export class API {
                 timestamp: new Date("2022-02-01T12:00:00Z"),
                 type: "expense",
                 balance: {
-                    balance: 500,
+                    value: 500,
                     currency: "BRL"
                 },
                 category: {
@@ -48,7 +46,7 @@ export class API {
                 timestamp: new Date("2021-12-01T12:00:00Z"),
                 type: "income",
                 balance: {
-                    balance: 2000,
+                    value: 2000,
                     currency: "BRL"
                 },
                 category: {
@@ -71,7 +69,29 @@ export class API {
                 cpf: "123.456.789-99",
                 createdAt: new Date("2022-01-01T12:00:00Z"),
                 modifiedAt: new Date("2022-01-01T12:00:00Z"),
+                balance: {
+                    value: 2000,
+                    currency: "BRL"
+                },
             }
         ]
+    }
+
+    public getExpenseCategorySumary(): Readonly<MonthExpenseSumary[]> {
+        return [
+            {
+                year: "2022",
+                month: "01",
+                totalBalance: money(2_000),
+                totalSpent: money(1_200),
+                expenses: [
+                    {
+                        id: "789",
+                        name: "Salário",
+                        total: money(1_200)
+                    }
+                ]
+            }
+        ].sort(MonthlySumarySorter)
     }
 }

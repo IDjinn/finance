@@ -32,7 +32,7 @@ export const TransactionsContext = createContext<TransactiionsContextType>({
 });
 
 
-export const APIProvider: FC<{ children: ReactNode }> = ({ children }) => {
+export const TransactionsProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const [incomesAtom, setIncomes] = useAtom(incomes);
     const [expensesAtom, setExpenses] = useAtom(expenses);
 

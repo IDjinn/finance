@@ -11,48 +11,45 @@ import DonutChart, { Data } from '@/components/charts/donut/DonutChart';
 import { generateRandomNumbers } from '@/utils/random';
 import { calculatePercentage } from '@/utils/percentage';
 import { Constants } from '@/utils/constants';
+import { useApi } from '@/hooks/useApi';
 
 const RADIUS = 160;
 const STROKE_WIDTH = 30;
 const OUTER_STROKE_WIDTH = 46;
 const GAP = 0.04;
 
-export default function TabOneScreen() {
-  const n = 5;
-  const [data, setData] = useState<Data[]>([]);
-  const totalValue = useSharedValue(0);
+export default function Home() {
+  const api = useApi();
   const decimals = useSharedValue<number[]>([]);
-  const colors = ['#fe769c', '#46a0f8', '#c3f439', '#88dabc', '#e43433'];
-  const [render, setRender] = useState(false)
+  const colors = ['#e43433', '#dadde3', '#c3f439', '#88dabc', '#e43433'];
 
-  const toggleRender = () => {
-    setRender(!render);
-  }
+  const [data, setData] = useState<Data[]>([]);
+  const [expenseSumary, setExpenseSumary] = useState(api.getExpenseCategorySumary()[0]);
+  const totalValue = useSharedValue(expenseSumary.totalBalance);
+  const n = useMemo(() => expenseSumary.expenses.length + 1, [expenseSumary]);
 
-  const generateData = () => {
-    const generateNumbers = generateRandomNumbers(n);
-    const total = generateNumbers.reduce(
-      (acc, currentValue) => acc + currentValue,
-      0,
-    );
-    const generatePercentages = calculatePercentage(generateNumbers, total);
+  useEffect(() => {
+    let generateNumbers = expenseSumary.expenses.map(e => e.total);
+    if (expenseSumary.totalSpent < expenseSumary.totalBalance) {
+      const balance = expenseSumary.totalBalance - expenseSumary.totalSpent;
+      generateNumbers = [...generateNumbers, balance];
+    }
+    const generatePercentages = calculatePercentage(generateNumbers, expenseSumary.totalBalance);
     const generateDecimals = generatePercentages.map(
       number => Number(number.toFixed(0)) / 100,
     );
-    totalValue.value = withTiming(total, { duration: 1000 });
+    totalValue.value = withTiming(expenseSumary.totalBalance, { duration: 1000 });
     decimals.value = [...generateDecimals];
 
-    const arrayOfObjects = generateNumbers.map((value, index) => ({
+    setData(generateNumbers.map((value, index) => ({
       value,
       percentage: generatePercentages[index],
       color: colors[index],
-    }));
+    })));
+  }, [expenseSumary]);
 
-    setData(arrayOfObjects);
-  };
-
-  const fontStyle = useMemo(() => ({ fontFamily: 'arial', fontSize: 60 }), []);
-  const smallFontStyle = useMemo(() => ({ fontFamily: 'arial', fontSize: 25 }), []);
+  const fontStyle = useMemo(() => ({ fontFamily: 'arial', fontSize: 38 }), []);
+  const smallFontStyle = useMemo(() => ({ fontFamily: 'arial', fontSize: 21 }), []);
 
   const font = useMemo(() => matchFont(fontStyle), [fontStyle]);
   const smallerFont = useMemo(() => matchFont(smallFontStyle), [smallFontStyle]);
@@ -62,7 +59,7 @@ export default function TabOneScreen() {
     return <View />;
   }
 
-  const targetText = useDerivedValue(() => `$${Math.round(totalValue.value)}`, []);
+  const targetText = useDerivedValue(() => (expenseSumary.totalSpent / 10).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), []);
   const textX = useDerivedValue(() => {
     const textSize = font.measureText(targetText.value);
     return RADIUS - textSize.width / 2;
@@ -71,9 +68,6 @@ export default function TabOneScreen() {
 
   return (
     <Container>
-      <TouchableOpacity onPress={toggleRender} style={styles.button}>
-        <Text style={styles.buttonText}>Render</Text>
-      </TouchableOpacity>
       <Text style={styles.title}>Finance</Text>
       <Card.Container
         layout={LinearTransition.duration(Constants.SLOW_ANIMATION_MILLIS).delay(Constants.SLOW_ANIMATION_MILLIS)}
@@ -82,10 +76,9 @@ export default function TabOneScreen() {
       >
         <Card.Header>
           <Card.Title
-
             layout={LinearTransition.duration(Constants.SLOW_ANIMATION_MILLIS).delay(Constants.SLOW_ANIMATION_MILLIS)}
             entering={FadeInLeft}
-            exiting={FadeOutRight} >Velit </Card.Title>
+            exiting={FadeOutRight} >{expenseSumary.month}/{expenseSumary.year}</Card.Title>
         </Card.Header>
         <Card.Body>
           <Center>
@@ -103,24 +96,21 @@ export default function TabOneScreen() {
                 colors={colors}
               >
                 <SkiaText
-                  x={RADIUS - smallerFont.measureText('Total Spent').width / 2}
-                  y={RADIUS + smallerFont.measureText('$$').height * 2.5 }
+                  x={RADIUS - smallerFont.measureText('Total Gasto').width / 2}
+                  y={RADIUS + smallerFont.measureText('$$').height * 2.5}
                   font={smallerFont}
-                  text={'Total Spent'}
+                  text={'Total Gasto'}
                   color="black"
                 />
                 <SkiaText
                   x={textX}
-                  y={RADIUS + font.measureText('$00').height / 2}
+                  y={RADIUS + font.measureText('R$00').height / 2}
                   text={targetText}
                   font={font}
                   color="black"
                 />
               </DonutChart>
             </View>
-            <TouchableOpacity onPress={generateData} style={styles.button}>
-              <Text style={styles.buttonText}>Animate !</Text>
-            </TouchableOpacity>
           </Center>
         </Card.Body>
       </Card.Container>
