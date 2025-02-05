@@ -10,3 +10,6 @@ export type ModifiableEntity = {
     createdAt: UTCDate;
     modifiedAt: UTCDate;
 }
+
+export const EntitySorter = (a:Entity, b: Entity) => b.createdAt.getTime() - a.createdAt.getTime();
+    

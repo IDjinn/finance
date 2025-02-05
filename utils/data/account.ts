@@ -14,7 +14,7 @@ export type PessoaJuridica = Readonly<{
     cnpj: CNPJ;
 }>;
 
-export type Accont =
+export type Account =
     ModifiableEntity
     & OneOf<PessoaFisica, PessoaJuridica>
     & {
@@ -23,12 +23,12 @@ export type Accont =
         agencyCode: string;
     }
 
-    const lucas: Accont = {
-        id: 1,
-        name: "Lucas",
-        agency: "1234",
-        agencyCode: "5678",
-        cpf: "123.456.789-99",
-        createdAt: new Date( '2020-09-10T13:03:33.902Z'),
-        modifiedAt: new Date( '2020-09-10T13:03:33.902Z'),
-    }
+const lucas: Account = {
+    id: 1,
+    name: "Lucas",
+    agency: "1234",
+    agencyCode: "5678",
+    cpf: "123.456.789-99",
+    createdAt: new Date('2020-09-10T13:03:33.902Z'),
+    modifiedAt: new Date('2020-09-10T13:03:33.902Z'),
+}

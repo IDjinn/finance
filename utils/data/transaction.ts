@@ -2,7 +2,7 @@ import { DeepReadonly, GUID, UTCDate } from "../readonly";
 import { Balance } from "./balance";
 import { Entity } from "./entity";
 
-export type TransactionType = "income" | "expense" | "transfer";
+export type TransactionType = "income" | "expense";
 
 export type Money = number;
 

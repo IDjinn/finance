@@ -1,5 +1,5 @@
-import { Accont, CPF } from '../data/account';
-import {fakerPT_BR as faker} from '@faker-js/faker';
+import { Account, CPF } from '../data/account';
+import { fakerPT_BR as faker } from '@faker-js/faker';
 
 
 function fakeCPF(): string {
@@ -21,16 +21,16 @@ function fakeCPF(): string {
 }
 
 
-export const fakeAccount = async(): Promise<Accont> =>{
+export const fakeAccount = async (): Promise<Account> => {
     return {
         id: faker.string.uuid(),
         name: faker.internet.username(),
-        agency: faker.number.int({min: 1000, max: 5000}) + '' ,
-        agencyCode: faker.number.romanNumeral({max: 10}),
+        agency: faker.number.int({ min: 1000, max: 5000 }) + '',
+        agencyCode: faker.number.romanNumeral({ max: 10 }),
         cpf: fakeCPF(),
         createdAt: faker.date.anytime(),
         modifiedAt: faker.date.anytime(),
-    } as Accont;
+    } as Account;
 }
 
 console.log(fakeAccount())
