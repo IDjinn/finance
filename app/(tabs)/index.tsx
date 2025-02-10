@@ -1,5 +1,4 @@
-import { Platform, StyleSheet, View } from 'react-native';
-
+import { Platform, View } from 'react-native';
 import { Text } from '@/components/Themed';
 import { Text as SkiaText } from '@shopify/react-native-skia';
 // @ts-ignore
@@ -29,23 +28,24 @@ export default function Home() {
   const [data, setData] = useState<Data[]>([]);
   const [expenseSumary, setExpenseSumary] = useState(api.getExpenseCategorySumary()[0]);
   const totalValue = useSharedValue(expenseSumary.totalBalance);
-  const [startDate, setStartDate] = useState(new Date(Date.now() - (10 * 24 * 60 * 60 * 1000)));
+  const [startDate, setStartDate] = useState(new Date(Date.now() - (30 * 24 * 60 * 60 * 1000)));
   const [endDate, setEndDate] = useState(new Date());
   const [showPicker, setShowPicker] = useState(Platform.OS === 'ios');
   const n = useMemo(() => expenseSumary.expenses.length + 1, [expenseSumary]);
 
   useEffect(() => {
-    let generateNumbers = expenseSumary.expenses.map(e => e.total);
+    const generateNumbers = expenseSumary.expenses.map(e => e.total);
+
     if (expenseSumary.totalSpent < expenseSumary.totalBalance) {
       const balance = expenseSumary.totalBalance - expenseSumary.totalSpent;
-      generateNumbers = [...generateNumbers, balance];
+      generateNumbers.push(balance);
     }
+
     const generatePercentages = calculatePercentage(generateNumbers, expenseSumary.totalBalance);
-    const generateDecimals = generatePercentages.map(
-      number => Number(number.toFixed(0)) / 100,
-    );
+    const generateDecimals = generatePercentages.map(number => Number(number.toFixed(0)) / 100);
+
     totalValue.value = withTiming(expenseSumary.totalBalance, { duration: 1000 });
-    decimals.value = [...generateDecimals];
+    decimals.value = generateDecimals;
 
     setData(generateNumbers.map((value, index) => ({
       value,
@@ -56,7 +56,6 @@ export default function Home() {
 
   const fontStyle = useMemo(() => ({ fontFamily: 'arial', fontSize: 38 }), []);
   const smallFontStyle = useMemo(() => ({ fontFamily: 'arial', fontSize: 21 }), []);
-
   const font = useMemo(() => matchFont(fontStyle), [fontStyle]);
   const smallerFont = useMemo(() => matchFont(smallFontStyle), [smallFontStyle]);
 
@@ -71,26 +70,19 @@ export default function Home() {
     return RADIUS - textSize.width / 2;
   }, [font, targetText]);
 
-  const openAndroidPicker = () => {
-    if (Platform.OS === "android") setShowPicker(true);
-  };
+  const openAndroidPicker = () => Platform.OS === 'android' && setShowPicker(true);
 
   const onDateChange = (picker: 'start' | 'end', event: any, selectedDate: any) => {
-    const currentDate = selectedDate || picker == 'start' ? startDate : endDate;
+    const currentDate = selectedDate || (picker === 'start' ? startDate : endDate);
     setShowPicker(Platform.OS === 'ios');
-    picker == 'start' ? setStartDate(currentDate) : setEndDate(currentDate);
-    console.log('onDateChange called', selectedDate);
-  }
+    picker === 'start' ? setStartDate(currentDate) : setEndDate(currentDate);
+  };
 
   return (
     <GestureHandlerRootView>
       <Container>
         <PageTitle>Finance</PageTitle>
-        <Card.Container
-          layout={LinearTransition.duration(Constants.SLOW_ANIMATION_MILLIS).delay(Constants.SLOW_ANIMATION_MILLIS)}
-          entering={FadeInLeft}
-          exiting={FadeOutRight}
-        >
+        <Card.Container >
           <Card.Header>
             <View>
               {showPicker &&
@@ -132,7 +124,7 @@ export default function Home() {
           </Card.Header>
           <Card.Body>
             <Center>
-              <View style={styles.ringChartContainer}>
+              <RingChartContainer>
                 <DonutChart
                   radius={RADIUS}
                   gap={GAP}
@@ -160,10 +152,20 @@ export default function Home() {
                     color="black"
                   />
                 </DonutChart>
-              </View>
+              </RingChartContainer>
             </Center>
           </Card.Body>
         </Card.Container>
+
+        <CardTransactions>
+          <Card.ScrollableBody >
+            <Card.Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum voluptatum eligendi ab, vel aperiam dolor! Aspernatur laudantium porro unde hic iste soluta aliquid adipisci cupiditate. Nemo, quidem. Excepturi, nulla voluptatem!</Card.Text>
+            <Card.Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum voluptatum eligendi ab, vel aperiam dolor! Aspernatur laudantium porro unde hic iste soluta aliquid adipisci cupiditate. Nemo, quidem. Excepturi, nulla voluptatem!</Card.Text>
+            <Card.Text>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum voluptatum eligendi ab, vel aperiam dolor! Aspernatur laudantium porro unde hic iste soluta aliquid adipisci cupiditate. Nemo, quidem. Excepturi, nulla voluptatem!</Card.Text>
+          </Card.ScrollableBody>
+        </CardTransactions>
+
+
       </Container>
     </GestureHandlerRootView>
   );
@@ -172,15 +174,15 @@ export default function Home() {
 const PageTitle = styled.Text`
   font-size: 24px;
   font-weight: bold;
-
-`
+`;
 
 const Container = styled(Animated.View)`
   display: flex;
   padding-top: 30px;
   padding: 20px;
   justify-content: center;
-`
+  align-items: center;
+`;
 
 const Center = styled.View`
   display: flex;
@@ -192,50 +194,15 @@ const FontAwesomeIcon = styled(Icon)`
   margin-left: 10px;
 `;
 
-const SumaryMonthPickerButton = styled(Pressable)`
-`
+const SumaryMonthPickerButton = styled(Pressable)``;
 
-const styles = StyleSheet.create({
-  ringChartContainer: {
-    width: RADIUS * 2,
-    height: RADIUS * 2,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  chart: {
-    height: 200,
-    width: 200,
-  },
-  legendContainer: {
-    marginTop: 20,
-    width: '100%',
-  },
-  button: {
-    marginTop: 40,
-    backgroundColor: "orange",
-    paddingHorizontal: 60,
-    paddingVertical: 15,
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 20,
-  },
-  legendItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  legendColor: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  legendText: {
-    fontSize: 16,
-  },
-});
+const RingChartContainer = styled.View`
+  width: ${RADIUS * 2}px;
+  height: ${RADIUS * 2}px;
+`;
+
+const CardTransactions = styled(Card.Container)`
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+`
