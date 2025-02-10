@@ -16,8 +16,9 @@ const Container = styled(Animated.View)`
 
 const Header = styled(Animated.View)`
     padding: 10px;
-    align-items: flex-start;
-    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 `;
 
 const Title = styled(Animated.Text)`
